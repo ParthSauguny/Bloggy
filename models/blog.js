@@ -17,4 +17,8 @@ const blogSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:"user"
     }
-})
+} , {timestamps:true});
+
+const blog = model('blog' , blogSchema);
+
+module.exports = blog;
