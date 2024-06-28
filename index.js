@@ -17,10 +17,15 @@ app.set('views' , path.resolve('./views'));
 app.use(express.urlencoded({extended: false}));
 app.use(cookieparser());
 app.use(checkforAuthenticationCookie("token"));
+app.use(express.static(path.resolve("./public")));
 
-app.get("/" , (req,res) => {
+const blog = require('./models/blog');
+
+app.get("/" , async(req,res) => {
+    const allBlogs = await blog.find({});
     res.render('home',{
         user: req.user,
+        blogs:allBlogs,
     });
 });
 
