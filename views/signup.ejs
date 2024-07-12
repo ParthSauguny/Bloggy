@@ -5,7 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup</title>
 </head>
-<body>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, sit enim tempora non consequuntur vero hic dolores mollitia accusantium? Dolorum ut id voluptates optio? Cupiditate vero ratione ab consectetur id.
+<style>
+    .signup{
+        background-color: rgb(228, 140, 24);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content:space-between;
+        margin-top: 5px;
+    }
+</style>
+<body style="background-color: brown;">
+    <%- include('./partials/navbar') %>
+    <h1 style="text-align: center;">Signup</h1>
+    <div class="signup">
+        <form action="/" method="post">
+            <label>Enter your Name</label>
+            <input type="text" placeholder="name" name="Fullname">
+
+            <label>Enter your Email</label>
+            <input type="email" name="email">
+
+            <label>Enter your Password</label>
+            <input type="password" name="password">
+        </form>
+    </div>    
 </body>
 </html>

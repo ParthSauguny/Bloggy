@@ -34,7 +34,7 @@ router.post('/' , upload.single() , async(req,res) => {
 });
 
 router.get("/:_id" , async(req,res) => {
-    const blog = await Blog.findbyID(req.params.id);
+    const blog = await Blog.findById(req.params.id);
     return res.render("blog" , {
         user: req.user,
         blog,
