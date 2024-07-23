@@ -1,35 +1,43 @@
-const path = require('path');
-const express = require('express');
+require("dotenv").config();
+
+const path = require("path");
+const express = require("express");
+const mongoose = require("mongoose");
+const cookiePaser = require("cookie-parser");
+
+const Blog = require("./models/blog");
+
+const userRoute = require("./Routes/user");
+const blogRoute = require("./Routes/blog");
+
+const {
+  checkForAuthenticationCookie,
+} = require("./middlewares/authent");
+
 const app = express();
-const PORT = 8000;
-const userRoutes = require("./Routes/user");
-const blogRoutes = require("./Routes/blog");
-const mongo = require('mongoose');
-const cookieparser = require("cookie-parser");
-const { checkforAuthenticationCookie } = require('./middlewares/authent');
+const PORT = process.env.PORT || 8000;
 
-mongo.connect("mongodb://localhost:27017/bloggy")
-.then((e) => console.log("connected to database !!"));
+mongoose
+  .connect("mongodb://localhost:27017/bloggy")
+  .then((e) => console.log("MongoDB Connected"));
 
-app.set('view engine' , 'ejs');
-app.set('views' , path.resolve('./views'));
+app.set("view engine", "ejs");
+app.set("views", path.resolve("./views"));
 
-app.use(express.urlencoded({extended: false}));
-app.use(cookieparser());
-app.use(checkforAuthenticationCookie("token"));
+app.use(express.urlencoded({ extended: false }));
+app.use(cookiePaser());
+app.use(checkForAuthenticationCookie("token"));
 app.use(express.static(path.resolve("./public")));
 
-const blog = require('./models/blog');
-
-app.get("/" , async(req,res) => {
-    const allBlogs = await blog.find({});
-    res.render('home',{
-        user: req.user,
-        blogs:allBlogs,
-    });
+app.get("/", async (req, res) => {
+  const allBlogs = await Blog.find({});
+  res.render("home", {
+    user: req.user,
+    blogs: allBlogs,
+  });
 });
 
-app.use("/user" , userRoutes);
-app.use("/blog" , blogRoutes);
+app.use("/user", userRoute);
+app.use("/blog", blogRoute);
 
-app.listen(PORT , () => console.log("server has started at PORT" , PORT));
+app.listen(PORT, () => console.log(`Server Started at PORT:${PORT}`));
